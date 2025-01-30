@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
     @Override
     public ApiResponse registerUser(RegisterDto registerDTO) {
-        boolean optionalUsers=userRepository.existsByEmail(registerDTO.getEmail());
+        boolean optionalUsers=userRepository.existsByUsername(registerDTO.getUsername());
         if (registerDTO.getPassword().equals(registerDTO.getRepeatPassword())){
             if (!optionalUsers){
                 Users users = new Users();
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username).orElseThrow(()->new UsernameNotFoundException(username+" not found username"));
+        return userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException(username+" not found username"));
     }
 
     @Override
@@ -98,8 +98,8 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
-    public Optional<Users> getUser(String email) {
-        return userRepository.findByEmail(email);
+    public Optional<Users> getUser(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override

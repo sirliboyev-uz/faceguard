@@ -14,8 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
-import static com.example.faceguard.model.permission.Permission.READ_ROLE;
-import static com.example.faceguard.model.permission.Permission.READ_USER;
+import static com.example.faceguard.model.permission.Permission.*;
 
 @Component
 public class DataLoader implements ApplicationRunner {
@@ -42,12 +41,12 @@ public class DataLoader implements ApplicationRunner {
             ));
             Role userRole = roleRepository.save(new Role(
                     Constanta.USER,
-                    Arrays.asList(READ_ROLE, READ_USER)
+                    Arrays.asList(READ_ROLE, READ_USER, READ_COMPANY)
             ));
             userRepository.save(new Users(
-                    "Admin", "Admin", null, "admin@gmail.com", "+998945744373", null, null, null, "admin", "admin", null, adminRole, null));
+                    "Admin", "Admin", null, "admin@gmail.com", "+998945744373", null, null, null, "admin", passwordEncoder.encode("admin"), null, adminRole, null));
             userRepository.save(new Users(
-                    "Users", "user", null, "user@gmail.com", "+998995581848", null, null, null, "user", "user", null, userRole, null));
+                    "Users", "user", null, "user@gmail.com", "+998995581848", null, null, null, "user", passwordEncoder.encode("user"), null, userRole, null));
         }
     }
 }
