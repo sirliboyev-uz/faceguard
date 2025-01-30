@@ -41,5 +41,4 @@ public class SecuritySettings{
 
         return http.build();
     }
-
 }
