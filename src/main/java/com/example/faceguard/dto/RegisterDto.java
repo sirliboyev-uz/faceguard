@@ -6,6 +6,7 @@ import com.example.faceguard.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -21,10 +22,10 @@ public class RegisterDto {
     private Date birthDate;
     private String gender;
     private String jobTitle;
-    private Company company;
     private String username;
     private String password;
     private String repeatPassword;
-    private Role role;
-    private Image image;
+    private Role roleId;
+    private MultipartFile image;
+    private Company companyId;
 }

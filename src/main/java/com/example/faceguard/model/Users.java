@@ -93,6 +93,4 @@ public class Users extends AbstractEntity implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return isCredentialsNonExpired;
     }
-
-
 }

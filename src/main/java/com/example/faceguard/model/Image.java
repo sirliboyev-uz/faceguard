@@ -24,6 +24,4 @@ public class Image extends AbstractEntity {
     private float fileSize;
     @Column(nullable = false)
     private byte[] bytes;
-    @OneToOne
-    private Users users;
 }

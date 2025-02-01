@@ -39,26 +39,26 @@ public class RoleServiceImpl implements RoleService {
         }
         return new ApiResponse("Role not found",false);
     }
-    @Override
-    public ApiResponse delete(Long id) {
-        Optional<Role> optionalRole=roleRepository.findById(id);
-        if(optionalRole.isPresent()){
-            roleRepository.deleteById(id);
-            return new ApiResponse("Successfully deleted",true);
-        }
-        return new ApiResponse("Role not found",false);
-    }
-    @Override
-    public ApiResponse role(Long id) {
-        Optional<Role> role=roleRepository.findById(id);
-        if(role.isPresent()){
-            return new ApiResponse("Success",true, role.get());
-        }
-        return new ApiResponse("Not found",false);
-    }
-    @Override
-    public ApiResponse roles() {
-        List<Role> roles=roleRepository.findAll();
-        return new ApiResponse("Success",true,roles);
-    }
+//    @Override
+//    public ApiResponse delete(Long id) {
+//        Optional<Role> optionalRole=roleRepository.findById(id);
+//        if(optionalRole.isPresent()){
+//            roleRepository.deleteById(id);
+//            return new ApiResponse("Successfully deleted",true);
+//        }
+//        return new ApiResponse("Role not found",false);
+//    }
+//    @Override
+//    public ApiResponse role(Long id) {
+//        Optional<Role> role=roleRepository.findById(id);
+//        if(role.isPresent()){
+//            return new ApiResponse("Success",true, role.get());
+//        }
+//        return new ApiResponse("Not found",false);
+//    }
+//    @Override
+//    public ApiResponse roles() {
+//        List<Role> roles=roleRepository.findAll();
+//        return new ApiResponse("Success",true,roles);
+//    }
 }

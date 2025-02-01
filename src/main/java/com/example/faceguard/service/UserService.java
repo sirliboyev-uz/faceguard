@@ -1,9 +1,6 @@
 package com.example.faceguard.service;
 
-import com.example.faceguard.dto.ApiResponse;
-import com.example.faceguard.dto.JwtResponse;
-import com.example.faceguard.dto.LoginDto;
-import com.example.faceguard.dto.RegisterDto;
+import com.example.faceguard.dto.*;
 import com.example.faceguard.model.Users;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,4 +14,8 @@ public interface UserService {
     JwtResponse loginUser(LoginDto loginDTO);
     Optional<Users> getUser(String email);
     List<Users> getUsers();
+
+    ReqRes getMyInfo(String username);
+
+    ReqRes refreshToken(ReqRes req);
 }
