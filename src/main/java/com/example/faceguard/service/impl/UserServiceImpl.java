@@ -53,8 +53,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiResponse registerUser(RegisterDto registerDTO) {
         boolean optionalUsers=userRepository.existsByUsername(registerDTO.getUsername());
-        Optional<Company> companyOptional = companyRepository.findById(registerDTO.getCompanyId().getId());
-        Optional<Role>  roleOptional= roleRepository.findById(registerDTO.getRoleId().getId());
+        Optional<Company> companyOptional = companyRepository.findById(Long.valueOf(registerDTO.getCompanyId()));
+        Optional<Role>  roleOptional= roleRepository.findById(Long.valueOf(registerDTO.getRoleId()));
 
         if (registerDTO.getPassword().equals(registerDTO.getRepeatPassword())){
             if (!optionalUsers){
@@ -85,20 +85,6 @@ public class UserServiceImpl implements UserService {
         }
         return new ApiResponse("Parollar mos emas", false, 500);
     }
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException(username+" not found username"));
-    }
-
-    @Override
-    public JwtResponse loginUser(LoginDto loginDTO) {
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
-        if (!authenticate.isAuthenticated()) return null;
-        Users users= (Users) authenticate.getPrincipal();
-        String token1=token.generateToken(users.getUsername(), users.getRole());
-        System.out.println(token1);
-        return new JwtResponse(token1, users.getId(), users.getEmail(), users.getRole().getRoleName());
-    }
 
     @Override
     public Optional<Users> getUser(String username) {
@@ -108,51 +94,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Users> getUsers() {
         return userRepository.findAll();
-    }
-
-    @Override
-    public ReqRes getMyInfo(String username) {
-        ReqRes reqRes = new ReqRes();
-        try {
-            Optional<Users> userOptional = userRepository.findByUsername(username);
-            if (userOptional.isPresent()) {
-                reqRes.setUsers(userOptional.get());
-                reqRes.setStatusCode(200);
-                reqRes.setMessage("successful");
-            } else {
-                reqRes.setStatusCode(404);
-                reqRes.setMessage("User not found for update");
-            }
-
-        }catch (Exception e){
-            reqRes.setStatusCode(500);
-            reqRes.setMessage("Error occurred while getting user info: " + e.getMessage());
-        }
-        return reqRes;
-
-    }
-
-    @Override
-    public ReqRes refreshToken(ReqRes refreshTokenRequest){
-        ReqRes response = new ReqRes();
-        try{
-            String username = token.extractUsername(refreshTokenRequest.getToken());
-            Users users = userRepository.findByUsername(username).orElseThrow();
-            if (token.isTokenValid(refreshTokenRequest.getToken(), users)) {
-                var jwt = token.generateToken(users.getUsername(), users.getRole());
-                response.setStatusCode(200);
-                response.setToken(jwt);
-                response.setRefreshToken(refreshTokenRequest.getToken());
-                response.setExpirationTime("24Hr");
-                response.setMessage("Successfully Refreshed Token");
-            }
-            response.setStatusCode(200);
-            return response;
-
-        }catch (Exception e){
-            response.setStatusCode(500);
-            response.setMessage(e.getMessage());
-            return response;
-        }
     }
 }

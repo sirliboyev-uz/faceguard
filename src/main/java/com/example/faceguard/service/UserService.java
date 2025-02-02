@@ -10,12 +10,6 @@ import java.util.Optional;
 
 public interface UserService {
     ApiResponse registerUser(RegisterDto registerDTO);
-    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
-    JwtResponse loginUser(LoginDto loginDTO);
     Optional<Users> getUser(String email);
     List<Users> getUsers();
-
-    ReqRes getMyInfo(String username);
-
-    ReqRes refreshToken(ReqRes req);
 }

@@ -2,13 +2,16 @@ package com.example.faceguard.controller;
 
 import com.example.faceguard.dto.*;
 import com.example.faceguard.model.utils.Annotation.RoleCheckName;
+import com.example.faceguard.service.AuthService;
 import com.example.faceguard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -16,28 +19,28 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class AuthController {
     private final UserService userService;
+    private final AuthService authService;
 
-    @PostMapping("/register")
-    public HttpEntity<?> register(@ModelAttribute RegisterDto registerDTO){
-        ApiResponse apiResponse = userService.registerUser(registerDTO);
-        return ResponseEntity.status(apiResponse.getStatusCode()).body(apiResponse.getMessage());
-    }
+
     @PostMapping("/login")
     public HttpEntity<?> login(@RequestBody LoginDto loginDTO){
-        JwtResponse jwtResponse = userService.loginUser(loginDTO);
+        JwtResponse jwtResponse = authService.loginUser(loginDTO);
         return ResponseEntity.ok(jwtResponse);
     }
+
+    @RoleCheckName("READ_USER")
     @GetMapping("/get-profile")
     public ResponseEntity<ReqRes> getMyProfile(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        ReqRes response = userService.getMyInfo(username);
+        ReqRes response = authService.getMyInfo(username);
         return  ResponseEntity.status(response.getStatusCode()).body(response);
     }
     @PostMapping("/refresh")
     public ResponseEntity<ReqRes> refreshToken(@RequestBody ReqRes req){
-        return ResponseEntity.ok(userService.refreshToken(req));
+        return ResponseEntity.ok(authService.refreshToken(req));
     }
+
 
 
 

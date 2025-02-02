@@ -22,14 +22,8 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class Filter extends OncePerRequestFilter {
-    @Autowired
-    Token token;
-
-    @Autowired
-    UserService userService;
     private final Token jwtUtils;
     private final UserDetailsService userDetailsService;
-
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
