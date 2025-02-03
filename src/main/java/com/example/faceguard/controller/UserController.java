@@ -2,25 +2,36 @@ package com.example.faceguard.controller;
 
 import com.example.faceguard.dto.ApiResponse;
 import com.example.faceguard.dto.RegisterDto;
+import com.example.faceguard.model.Users;
 import com.example.faceguard.model.utils.Annotation.RoleCheckName;
+import com.example.faceguard.repository.UserRepository;
 import com.example.faceguard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin("*")
 public class UserController {
 
     @Autowired
     private final UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @RoleCheckName("READ_USER")
+//    @PreAuthorize("hasAuthority('READ_USER')")
     @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public HttpEntity<?> register(
             @RequestParam("firstName") String firstName,
@@ -43,5 +54,11 @@ public class UserController {
 
         ApiResponse apiResponse = userService.registerUser(registerDTO);
         return ResponseEntity.status(apiResponse.getStatusCode()).body(apiResponse.getMessage());
+    }
+    @RoleCheckName("ADD_USER")
+    @GetMapping(value = "/users")
+    public HttpEntity<?> getUsers() {
+        List<Users> allUsers = userRepository.findAll();
+        return ResponseEntity.ok().body(allUsers);
     }
 }

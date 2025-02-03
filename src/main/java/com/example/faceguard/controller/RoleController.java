@@ -3,6 +3,7 @@ package com.example.faceguard.controller;
 import com.example.faceguard.dto.ApiResponse;
 import com.example.faceguard.dto.RoleRegisterDto;
 import com.example.faceguard.model.utils.Annotation.RoleCheckName;
+import com.example.faceguard.repository.RoleRepository;
 import com.example.faceguard.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -10,11 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/role")
-@CrossOrigin
+@RequestMapping("/api/v1/role")
+@CrossOrigin("*")
 public class RoleController {
     @Autowired
     RoleService roleService;
+    @Autowired
+    private RoleRepository roleRepository;
 
 ////    @RoleCheckName(value = "ADD_ROLE")
 //    @PostMapping("/register")
@@ -42,10 +45,9 @@ public class RoleController {
 //        return ResponseEntity.status(apiResponse.getType()?200:409).body(apiResponse.getType()?apiResponse.getMessage()+"\n"+apiResponse.getObject():apiResponse.getMessage());
 //    }
 //
-//    @RoleCheckName(value = "READ_ROLE")
-//    @GetMapping("/select")
-//    public HttpEntity<?> select(){
-//        ApiResponse apiResponse=roleService.roles();
-//        return ResponseEntity.status(apiResponse.getType()?200:409).body(apiResponse.getMessage()+"\n"+apiResponse.getObject());
-//    }
+    @RoleCheckName(value = "READ_ROLE")
+    @GetMapping("/list")
+    public HttpEntity<?> select(){
+        return ResponseEntity.ok(roleRepository.findAll());
+    }
 }

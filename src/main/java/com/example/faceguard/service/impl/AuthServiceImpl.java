@@ -64,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
         Users users= (Users) authenticate.getPrincipal();
         String token1=token.generateToken(users.getUsername(), users.getRole());
         System.out.println(token1);
-        return new JwtResponse(token1, users.getId(), users.getEmail(), users.getRole().getRoleName());
+        return new JwtResponse(token1, users.getId(), users.getEmail(), users.getRole().getRoleName(), users.getFirstName());
     }
     @Override
     public ReqRes refreshToken(ReqRes refreshTokenRequest){
