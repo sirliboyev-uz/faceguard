@@ -21,14 +21,15 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentRepository departmentRepository;
     @Override
     public ApiResponse createDepartment(DepartmentDto departmentDto) {
-        Optional<Branch> branch = branchRepository.findById(departmentDto.getBranchId());
-        Department department = new Department();
-        department.setName(departmentDto.getName());
-        if (branch.isPresent()) {
-            department.setBranch(branch.get());
+        Optional<Branch> branchOptional = branchRepository.findById(departmentDto.getBranchId());
+        if (branchOptional.isPresent()) {
+            Department department = new Department();
+            department.setBranch(branchOptional.get());
+            BeanUtils.copyProperties(departmentDto, department);
+            departmentRepository.save(department);
+            return new ApiResponse("Registered", true);
+        } else {
+            throw new RuntimeException("Branch not found!");
         }
-        else new ApiResponse("wrong branch", false);
-        departmentRepository.save(department);
-        return new ApiResponse("cool", true);
     }
 }

@@ -7,6 +7,7 @@ import com.example.faceguard.model.Company;
 import com.example.faceguard.repository.BranchRepository;
 import com.example.faceguard.repository.CompanyRepository;
 import com.example.faceguard.service.BranchService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,23 +24,15 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public ApiResponse createBranch(BranchDto branchDto) {
-        Optional<Company> company = companyRepository.findById(branchDto.getCompanyId());
-        if (company.isPresent()) {
-            Company companyObj = company.get();
-            if (!branchRepository.existsByName(branchDto.getName())) {
-                Branch branch = new Branch();
-                branch.setName(branchDto.getName());
-                branch.setDescription(branchDto.getDescription());
-                branch.setLatitude(branchDto.getLatitude());
-                branch.setLongitude(branchDto.getLongitude());
-                branch.setLocation(branchDto.getLocation());
-                branch.setCompany(companyObj);
-                branchRepository.save(branch);
-                System.out.println(branch);
-                return new ApiResponse("success", true);
-            }
-            return new ApiResponse("warning", false);
+        Optional<Company> companyOptional = companyRepository.findById(branchDto.getCompanyId());
+        if (companyOptional.isPresent()) {
+            branchDto.setCompanyId(companyOptional.get().getId());
+            Branch branch = new Branch();
+            BeanUtils.copyProperties(branchDto, branch);
+            branchRepository.save(branch);
+            return new ApiResponse("registered", true);
+        } else {
+            throw new RuntimeException("Company not found!");
         }
-        return new ApiResponse("error", true);
     }
 }

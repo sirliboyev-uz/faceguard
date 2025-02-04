@@ -1,6 +1,7 @@
 package com.example.faceguard.model;
 
 import com.example.faceguard.template.AbstractEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,5 +21,6 @@ public class Department extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "branch_id")
+    @JsonIgnore
     private Branch branch;
 }

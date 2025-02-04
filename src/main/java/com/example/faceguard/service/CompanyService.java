@@ -9,5 +9,9 @@ import org.springframework.stereotype.Service;
 public interface CompanyService {
 
     ApiResponse createCompany(CompanyDto company);
+    ApiResponse update(Long id, CompanyDto company);
 
+    ApiResponse deleteCompany(Long id);
+
+//    ApiResponse getCompany(Long id);
 }
