@@ -10,7 +10,7 @@ public interface RoleService {
 
     ApiResponse update(Long id, RoleRegisterDto dto);
 
-//    ApiResponse delete(Long id);
+    ApiResponse delete(Long id);
 //    ApiResponse role(Long id);
 //    ApiResponse roles();
 }

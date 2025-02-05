@@ -39,15 +39,15 @@ public class RoleServiceImpl implements RoleService {
         }
         return new ApiResponse("Role not found",false);
     }
-//    @Override
-//    public ApiResponse delete(Long id) {
-//        Optional<Role> optionalRole=roleRepository.findById(id);
-//        if(optionalRole.isPresent()){
-//            roleRepository.deleteById(id);
-//            return new ApiResponse("Successfully deleted",true);
-//        }
-//        return new ApiResponse("Role not found",false);
-//    }
+    @Override
+    public ApiResponse delete(Long id) {
+        Optional<Role> optionalRole=roleRepository.findById(id);
+        if(optionalRole.isPresent()){
+            roleRepository.deleteById(id);
+            return new ApiResponse("Successfully deleted",true);
+        }
+        return new ApiResponse("Role not found",false);
+    }
 //    @Override
 //    public ApiResponse role(Long id) {
 //        Optional<Role> role=roleRepository.findById(id);
