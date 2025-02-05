@@ -25,7 +25,7 @@ public class CompanyController {
     @Autowired
     private CompanyRepository companyRepository;
 
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "CREATE_COMPANY")
     @PostMapping("/register")
     public HttpEntity<?> create(@RequestBody CompanyDto companyDto){
         ApiResponse apiResponse = companyService.createCompany(companyDto);

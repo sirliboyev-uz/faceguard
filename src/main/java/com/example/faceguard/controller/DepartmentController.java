@@ -30,7 +30,7 @@ public class DepartmentController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @RoleCheckName(value = "ADD_DEPARTMENT")
+    @RoleCheckName(value = "CREATE_DEPARTMENT")
     @PostMapping("/register")
     public HttpEntity<?> create(@RequestBody DepartmentDto departmentDto){
 //        return ResponseEntity.ok(departmentService.createDepartment(departmentDto));
@@ -47,7 +47,7 @@ public class DepartmentController {
             departmentData.put("name", department.getName());
 
             // Fetch employee count by querying the Employee table based on department id
-            long employeeCount = employeeRepository.countByBranchId(department.getId());
+            long employeeCount = employeeRepository.countByCompanyId(department.getId());
 
             departmentData.put("employeeCount", employeeCount); // Count employees in the department
             departmentData.put("branchName", department.getBranch() != null ? department.getBranch().getName() : "No Branch");

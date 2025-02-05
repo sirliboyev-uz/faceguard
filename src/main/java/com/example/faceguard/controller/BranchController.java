@@ -38,7 +38,7 @@ public class BranchController {
     @Autowired
     private DepartmentRepository departmentRepository;
 
-    @RoleCheckName(value = "ADD_BRANCH")
+    @RoleCheckName(value = "CREATE_BRANCH")
     @PostMapping("/register")
     public ResponseEntity<?> createBranch(@RequestBody BranchDto branchDto) {
         Optional<Company> company = companyRepository.findById(branchDto.getCompanyId());

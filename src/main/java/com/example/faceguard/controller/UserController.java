@@ -2,6 +2,7 @@ package com.example.faceguard.controller;
 
 import com.example.faceguard.dto.ApiResponse;
 import com.example.faceguard.dto.RegisterDto;
+import com.example.faceguard.model.Image;
 import com.example.faceguard.model.Users;
 import com.example.faceguard.model.utils.Annotation.RoleCheckName;
 import com.example.faceguard.repository.UserRepository;
@@ -9,6 +10,7 @@ import com.example.faceguard.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -55,10 +56,26 @@ public class UserController {
         ApiResponse apiResponse = userService.registerUser(registerDTO);
         return ResponseEntity.status(apiResponse.getStatusCode()).body(apiResponse.getMessage());
     }
-    @RoleCheckName("ADD_USER")
+    @RoleCheckName("CREATE_USER")
     @GetMapping(value = "/users")
     public HttpEntity<?> getUsers() {
         List<Users> allUsers = userRepository.findAll();
         return ResponseEntity.ok().body(allUsers);
+    }
+
+//    @RoleCheckName("READ_USER")
+    @GetMapping("/avatar/{userId}")
+    public ResponseEntity<byte[]> getUserAvatar(@PathVariable Long userId) {
+        Users user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Image image = user.getImage();
+        if (image == null || image.getBytes() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, image.getContentType())
+                .body(image.getBytes());
     }
 }

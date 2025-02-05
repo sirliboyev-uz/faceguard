@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     boolean existsByPhone(String phone);
-    long countByBranchId(Long branchId);
+    long countByCompanyId(Long companyId);
 }

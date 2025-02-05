@@ -17,9 +17,15 @@ public class EmployeeDto {
     private String middleName;
     private String email;
     private String phone;
-    private Date birthDate;
+    private Date birthday;
     private String gender;
     private String jobTitle;
-    private Branch branchId;
+    private String schedule;
+    private double salary;
+
+    // Associate employee with a company via companyId
+    private Long companyId;
+
+    // For file upload (image)
     private MultipartFile image;
 }

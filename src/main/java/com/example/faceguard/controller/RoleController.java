@@ -19,7 +19,7 @@ public class RoleController {
     @Autowired
     private RoleRepository roleRepository;
 
-    @RoleCheckName(value = "ADD_ROLE")
+    @RoleCheckName(value = "CREATE_ROLE")
     @PostMapping("/register")
     public HttpEntity<?> create(@RequestBody RoleRegisterDto roleRegisterDTO){
         ApiResponse apiResponse = roleService.register(roleRegisterDTO);
