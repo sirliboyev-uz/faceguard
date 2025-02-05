@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,17 +56,28 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public ApiResponse deleteCompany(Long id) {
         Optional<Company> companyOptional = companyRepository.findById(id);
-        Optional<Branch> branchOptional = branchRepository.findByCompanyId(id);
-        Optional<Department> departmentOptional = departmentRepository.findByBranchId(branchOptional.get().getId());
 
-        if (companyOptional.isEmpty()) return new ApiResponse("error",false);
+        if (companyOptional.isEmpty()) {
+            return new ApiResponse("error: company not found", false);
+        }
 
-        departmentRepository.deleteByBranchId(departmentOptional.get().getId());
-        branchRepository.deleteByCompanyId(branchOptional.get().getId());
+        // Kompaniyaga tegishli branchlarni topamiz
+        List<Branch> branches = branchRepository.findByCompanyId(id);
 
+        // Har bir branch uchun departmentlarni o‘chiramiz
+        for (Branch branch : branches) {
+            departmentRepository.deleteByBranchId(branch.getId());
+        }
+
+        // Endi barcha branchlarni o‘chiramiz
+        branchRepository.deleteByCompanyId(id);
+
+        // Kompaniyani o‘chiramiz
         companyRepository.deleteById(id);
-        return new ApiResponse("successfull",true);
+
+        return new ApiResponse("Successfully deleted company and its branches & departments", true);
     }
+
 
 //    @Override
 //    public ApiResponse getCompany(Long id) {

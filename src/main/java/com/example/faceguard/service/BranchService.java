@@ -6,6 +6,7 @@ import com.example.faceguard.dto.CompanyDto;
 import com.example.faceguard.model.Branch;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,4 +18,6 @@ public interface BranchService {
     Optional<Branch> getBranchById(Long id);
 
     Optional<Branch> updateBranch(Long id, BranchDto branchDTO);
+
+    List<Branch> getBranchesByCompanyId(Long companyId);
 }

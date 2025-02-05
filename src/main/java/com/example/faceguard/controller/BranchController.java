@@ -4,9 +4,11 @@ package com.example.faceguard.controller;
 import com.example.faceguard.dto.BranchDto;
 import com.example.faceguard.model.Branch;
 import com.example.faceguard.model.Company;
+import com.example.faceguard.model.Department;
 import com.example.faceguard.model.utils.Annotation.RoleCheckName;
 import com.example.faceguard.repository.BranchRepository;
 import com.example.faceguard.repository.CompanyRepository;
+import com.example.faceguard.repository.DepartmentRepository;
 import com.example.faceguard.service.BranchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -33,7 +35,10 @@ public class BranchController {
     @Autowired
     private BranchRepository branchRepository;
 
-    @RoleCheckName(value = "ADD_COMPANY")
+    @Autowired
+    private DepartmentRepository departmentRepository;
+
+    @RoleCheckName(value = "ADD_BRANCH")
     @PostMapping("/register")
     public ResponseEntity<?> createBranch(@RequestBody BranchDto branchDto) {
         Optional<Company> company = companyRepository.findById(branchDto.getCompanyId());
@@ -49,7 +54,7 @@ public class BranchController {
         return ResponseEntity.ok(branch);
     }
 
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "READ_BRANCH")
     @GetMapping("/list")
     public HttpEntity<?> branchList() {
         List<Branch> branches = branchRepository.findAll();
@@ -71,7 +76,7 @@ public class BranchController {
     }
 
 
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "DELETE_BRANCH")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBranch(@PathVariable Long id){
         return branchRepository.findById(id).map(branch -> {
@@ -80,17 +85,37 @@ public class BranchController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "READ_BRANCH")
     @GetMapping("/{id}")
     public ResponseEntity<Branch> getBranch(@PathVariable Long id) {
         Optional<Branch> branch = branchService.getBranchById(id);
         return branch.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "UPDATE_BRANCH")
     @PutMapping("/update/{id}")
     public ResponseEntity<Branch> updateBranch(@PathVariable Long id, @RequestBody BranchDto branchDTO) {
         Optional<Branch> updatedBranch = branchService.updateBranch(id, branchDTO);
         return updatedBranch.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @RoleCheckName(value = "READ_BRANCH")
+    @GetMapping("/list/{companyId}")
+    public List<Branch> getBranchesByCompany(@PathVariable Long companyId) {
+        return branchService.getBranchesByCompanyId(companyId);
+    }
+
+
+    @RoleCheckName(value = "READ_BRANCH")
+    @GetMapping("/list-by-department/{departmentId}")
+    public ResponseEntity<List<Branch>> getBranchesByDepartment(@PathVariable Long departmentId) {
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new RuntimeException("Department not found"));
+
+        Long companyId = department.getBranch().getCompany().getId();
+        List<Branch> branches = branchRepository.findByCompanyId(companyId);
+
+        return ResponseEntity.ok(branches);
+    }
+
 }

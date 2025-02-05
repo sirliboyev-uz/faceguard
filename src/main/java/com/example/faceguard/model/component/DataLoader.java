@@ -41,7 +41,7 @@ public class DataLoader implements ApplicationRunner {
             ));
             Role userRole = roleRepository.save(new Role(
                     Constanta.USER,
-                    Arrays.asList(READ_ROLE, READ_USER, READ_COMPANY)
+                    Arrays.asList(READ_ROLE, READ_USER, READ_COMPANY, READ_BRANCH, READ_DEPARTMENT)
             ));
             userRepository.save(new Users(
                     "Admin", "Admin", null, "admin@gmail.com", "+998945744373", null, null, null, "admin", passwordEncoder.encode("admin"), null, adminRole, null));

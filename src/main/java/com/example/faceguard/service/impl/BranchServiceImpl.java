@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,5 +53,10 @@ public class BranchServiceImpl implements BranchService {
 
             return branchRepository.save(branch);
         });
+    }
+    
+    @Override
+    public List<Branch> getBranchesByCompanyId(Long companyId) {
+        return branchRepository.findByCompanyId(companyId);
     }
 }

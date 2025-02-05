@@ -30,13 +30,13 @@ public class DepartmentController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "ADD_DEPARTMENT")
     @PostMapping("/register")
     public HttpEntity<?> create(@RequestBody DepartmentDto departmentDto){
 //        return ResponseEntity.ok(departmentService.createDepartment(departmentDto));
         return ResponseEntity.ok(departmentService.createDepartment(departmentDto));
     }
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "READ_DEPARTMENT")
     @GetMapping("/list")
     public HttpEntity<?> departmentList() {
         List<Department> departments = departmentRepository.findAll();
@@ -57,20 +57,20 @@ public class DepartmentController {
 
         return ResponseEntity.ok(response);
     }
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "UPDATE_DEPARTMENT")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateDepartment(@PathVariable Long id, @RequestBody DepartmentDto departmentDto) {
         return ResponseEntity.ok(departmentService.updateDepartment(id, departmentDto));
     }
 
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "READ_DEPARTMENT")
     @GetMapping("/{id}")
     public ResponseEntity<Department> getDepartmentById(@PathVariable Long id) {
         Department department = departmentService.getDepartmentById(id);
         return ResponseEntity.ok(department);
     }
 
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "DELETE_DEPARTMENT")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDepartment(@PathVariable Long id) {
         departmentService.deleteDepartment(id);

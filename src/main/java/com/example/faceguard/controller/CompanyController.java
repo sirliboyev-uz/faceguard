@@ -32,7 +32,7 @@ public class CompanyController {
         return ResponseEntity.status(apiResponse.getType()?200:409).body(apiResponse.getMessage());
     }
 
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "UPDATE_COMPANY")
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable Long id, @RequestBody CompanyDto dto){
         ApiResponse apiResponse=companyService.update(id,dto);
@@ -43,6 +43,8 @@ public class CompanyController {
 //        ApiResponse food = companyService.getCompany(id);
         return ResponseEntity.ok(companyRepository.findById(id).orElse(null));
     }
+
+    @RoleCheckName(value = "READ_COMPANY")
     @GetMapping("/list")
     public ResponseEntity<List<CompanyDao>> companyList() {
         List<CompanyDao> companyDTOs = companyRepository.findAll().stream()
@@ -52,7 +54,7 @@ public class CompanyController {
     }
 
 
-    @RoleCheckName(value = "ADD_COMPANY")
+    @RoleCheckName(value = "DELETE_COMPANY")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCompany(@PathVariable Long id){
         return companyRepository.findById(id).map(company -> {
