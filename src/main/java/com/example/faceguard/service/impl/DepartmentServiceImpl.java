@@ -2,6 +2,7 @@ package com.example.faceguard.service.impl;
 
 import com.example.faceguard.dto.ApiResponse;
 import com.example.faceguard.dto.DepartmentDto;
+import com.example.faceguard.exceptions.ResourceNotFoundException;
 import com.example.faceguard.model.Branch;
 import com.example.faceguard.model.Department;
 import com.example.faceguard.repository.BranchRepository;
@@ -31,5 +32,30 @@ public class DepartmentServiceImpl implements DepartmentService {
         } else {
             throw new RuntimeException("Branch not found!");
         }
+    }
+
+    @Override
+    public Department updateDepartment(Long id, DepartmentDto departmentDto) {
+        Department department = departmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found"));
+        Branch branch = branchRepository.findById(departmentDto.getBranchId())
+                .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
+        department.setName(departmentDto.getName());
+        department.setBranch(branch);
+        return departmentRepository.save(department);
+    }
+
+    @Override
+    public Department getDepartmentById(Long id) {
+        return departmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found with id: " + id));
+    }
+
+    @Override
+    public void deleteDepartment(Long id) {
+        Department department = departmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found with id: " + id));
+
+        departmentRepository.delete(department);
     }
 }

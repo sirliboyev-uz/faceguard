@@ -79,4 +79,18 @@ public class BranchController {
             return ResponseEntity.ok("Company and related branches & departments deleted successfully!");
         }).orElse(ResponseEntity.notFound().build());
     }
+
+    @RoleCheckName(value = "ADD_COMPANY")
+    @GetMapping("/{id}")
+    public ResponseEntity<Branch> getBranch(@PathVariable Long id) {
+        Optional<Branch> branch = branchService.getBranchById(id);
+        return branch.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @RoleCheckName(value = "ADD_COMPANY")
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Branch> updateBranch(@PathVariable Long id, @RequestBody BranchDto branchDTO) {
+        Optional<Branch> updatedBranch = branchService.updateBranch(id, branchDTO);
+        return updatedBranch.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

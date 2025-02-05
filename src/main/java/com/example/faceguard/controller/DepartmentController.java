@@ -57,7 +57,23 @@ public class DepartmentController {
 
         return ResponseEntity.ok(response);
     }
+    @RoleCheckName(value = "ADD_COMPANY")
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateDepartment(@PathVariable Long id, @RequestBody DepartmentDto departmentDto) {
+        return ResponseEntity.ok(departmentService.updateDepartment(id, departmentDto));
+    }
 
+    @RoleCheckName(value = "ADD_COMPANY")
+    @GetMapping("/{id}")
+    public ResponseEntity<Department> getDepartmentById(@PathVariable Long id) {
+        Department department = departmentService.getDepartmentById(id);
+        return ResponseEntity.ok(department);
+    }
 
-
+    @RoleCheckName(value = "ADD_COMPANY")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteDepartment(@PathVariable Long id) {
+        departmentService.deleteDepartment(id);
+        return ResponseEntity.ok("Department deleted successfully");
+    }
 }

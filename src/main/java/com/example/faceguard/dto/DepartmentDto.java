@@ -7,5 +7,4 @@ import lombok.Data;
 public class DepartmentDto {
     private String name;
     private Long branchId;
-    private Long cameraId;
 }

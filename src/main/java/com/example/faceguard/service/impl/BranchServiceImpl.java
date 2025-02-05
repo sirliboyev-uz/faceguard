@@ -35,4 +35,22 @@ public class BranchServiceImpl implements BranchService {
             throw new RuntimeException("Company not found!");
         }
     }
+
+    @Override
+    public Optional<Branch> getBranchById(Long id) {
+        return branchRepository.findById(id);
+    }
+    public Optional<Branch> updateBranch(Long id, BranchDto branchDTO) {
+        return branchRepository.findById(id).map(branch -> {
+            branch.setName(branchDTO.getName());
+            branch.setDescription(branchDTO.getDescription());
+            branch.setLocation(branchDTO.getLocation());
+            branch.setLongitude(branchDTO.getLongitude());
+            branch.setLatitude(branchDTO.getLatitude());
+
+            companyRepository.findById(branchDTO.getCompanyId()).ifPresent(branch::setCompany);
+
+            return branchRepository.save(branch);
+        });
+    }
 }

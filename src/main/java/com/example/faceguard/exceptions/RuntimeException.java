@@ -11,4 +11,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class RuntimeException extends java.lang.RuntimeException {
     String type;
     String com;
+
+    public RuntimeException(String message) {
+
+        super(message);
+    }
 }

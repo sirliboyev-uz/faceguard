@@ -9,4 +9,10 @@ import org.springframework.stereotype.Service;
 @Service
 public interface DepartmentService {
     ApiResponse createDepartment(DepartmentDto departmentDto);
+
+    Department updateDepartment(Long id, DepartmentDto departmentDto);
+
+    Department getDepartmentById(Long id);
+
+    void deleteDepartment(Long id);
 }
