@@ -34,7 +34,7 @@ public class SecuritySettings{
                 .cors().and()
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers( "/api/v1/auth/**", "/api/v1/user/avatar/**").permitAll()
+                        .requestMatchers( "/api/v1/auth/**", "/api/v1/user/avatar/**", "/api/v1/employee/avatar/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

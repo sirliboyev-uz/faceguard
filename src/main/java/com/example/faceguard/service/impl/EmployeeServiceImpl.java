@@ -3,13 +3,11 @@ package com.example.faceguard.service.impl;
 
 import com.example.faceguard.dto.ApiResponse;
 import com.example.faceguard.dto.EmployeeDto;
-import com.example.faceguard.dto.RegisterDto;
 import com.example.faceguard.model.*;
 import com.example.faceguard.repository.CompanyRepository;
 import com.example.faceguard.repository.EmployeeRepository;
 import com.example.faceguard.repository.ImageRepository;
 import com.example.faceguard.service.EmployeeService;
-import lombok.SneakyThrows;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public ApiResponse createEmployee(EmployeeDto employeeDto) {
-        if (employeeRepository.existsByPhone(employeeDto.getPhone())) {
+        if (employeeRepository.existsByPhoneNumber(employeeDto.getPhoneNumber())) {
             return new ApiResponse("Employee with this phone already exists", false, 409);
         }
         try {

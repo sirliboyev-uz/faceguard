@@ -20,10 +20,10 @@ public class Employee extends AbstractEntity {
     private String lastName;
     private String middleName;
     private String email;
-    private String phone;
+    private String phoneNumber;
 
-    @Temporal(TemporalType.DATE)
-    private Date birthday;
+//    @Temporal(TemporalType.DATE)
+    private String birthDate;
 
     private String gender;
     private String jobTitle;

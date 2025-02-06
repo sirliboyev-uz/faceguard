@@ -1,6 +1,5 @@
 package com.example.faceguard.dto;
 
-import com.example.faceguard.model.Branch;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +15,8 @@ public class EmployeeDto {
     private String lastName;
     private String middleName;
     private String email;
-    private String phone;
-    private Date birthday;
+    private String phoneNumber;
+    private String birthDate;
     private String gender;
     private String jobTitle;
     private String schedule;
